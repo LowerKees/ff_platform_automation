@@ -1,0 +1,31 @@
+name: Deploy Bicep file
+on: [push]
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@main
+
+    - name: Log into Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.FF_AZ_CRED }}
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az group create --location "Central West Germany" --name rg-ff-syn
+
+    - name: Deploy Bicep file
+      uses: azure/arm-deploy@v2
+      with:
+        subscriptionId: ${{ secrets.FF_AZ_SUB_ID }}
+        deploymentMode: incremental
+        resourceGroupName: rg-ff-syn
+        template: ./main.bicep
+        parameters: 'storagePrefix=mystore storageSKU=Standard_LRS'
+        failOnStdErr: false
