@@ -1,0 +1,54 @@
+name: Deploy Bicep file
+on: 
+  workflow_call:
+      secrets:
+        FF_AZ_CRED:
+          required: true
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@main
+
+    - name: Get deployment values
+      uses: azure/powershell@v2
+      with:
+        inlineScript: |
+          $config = Get-Content -Path config.json | ConvertFrom-Json -Depth 99
+          Write-Host "sub_id=$($config.subscription_id)" >> "$GITHUB_ENV"
+          Write-Host "rsg=$($config.resourceGroupName)" >> "$GITHUB_ENV"
+          Write-Host "primary_container=$($config.primaryContainer)" >> "$GITHUB_ENV"
+          Write-Host "secondary_container=$($config.secondaryContainers)" >> "$GITHUB_ENV"
+          Write-Host "location=$($config.location)" >> "$GITHUB_ENV"
+          Write-Host "short_team_name=$($config.shortTeamName)" >> "$GITHUB_ENV"
+
+    - name: Log into Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.FF_AZ_CRED }}
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az group create --location $location --name $rsg
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az deployment group create \
+            --resource-group $rsg \
+            --name deploy001 \
+            --template-file separate_repos/platform_automation_repo/bicep/main.bicep \
+            --parameters buildId=$GITHUB_RUN_ID \
+              primaryContainer=
+              secondaryContainers=
+              environment=
+              location=$location \
+              shortTeamName=$short_team_name \
+              skuName="Standard_LRS"
