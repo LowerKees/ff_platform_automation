@@ -1,0 +1,8 @@
+{
+    "subscriptionId": "82938184-2f4f-4956-82f5-50eb15f40d3a",
+    "resourceGroupName": "rg-ff-syn-team001",
+    "primaryContainer": "workspace",
+    "secondaryContainers": ["bronze", "silver", "gold"],
+    "location": "Germany West Central",
+    "teamShortName": "team001"
+}
