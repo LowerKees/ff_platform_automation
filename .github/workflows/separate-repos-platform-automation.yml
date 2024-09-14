@@ -37,14 +37,15 @@ jobs:
       with:
         creds: ${{ secrets.FF_AZ_CRED }}
 
-    - name: Azure CLI script
+    - name: Create resource group
       uses: azure/cli@v2
       with:
         azcliversion: latest
         inlineScript: |
-          az group create --location "$location" --name $rsg
+          echo 'az group create --location "$location" --name "$rsg"'
+          az group create --location "$location" --name "$rsg"
 
-    - name: Azure CLI script
+    - name: Deploy resources
       uses: azure/cli@v2
       with:
         azcliversion: latest
