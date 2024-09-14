@@ -37,7 +37,6 @@ module synapse 'synapse.bicep' = {
   name: 'deploy-synapse-workspace-${buildId}'
   params: {
     containerName: primaryContainer
-    initialWorkspaceAdminObjectId: null
     storageAccountName: storage.name
     synapseName: synapseName
   }
