@@ -1,9 +1,16 @@
 name: Deploy Bicep file
+
 on: 
   workflow_call:
+      inputs:
+        configFilePath:
+          description: file path to your config file
+          required: true
+          type: string
       secrets:
         FF_AZ_CRED:
           required: true
+          
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -16,7 +23,7 @@ jobs:
       uses: azure/powershell@v2
       with:
         inlineScript: |
-          $config = Get-Content -Path config.json | ConvertFrom-Json -Depth 99
+          $config = Get-Content -Path ${{ inputs.configFilePath }} | ConvertFrom-Json -Depth 99
           Write-Host "sub_id=$($config.subscriptionId)" >> "$GITHUB_ENV"
           Write-Host "rsg=$($config.resourceGroupName)" >> "$GITHUB_ENV"
           Write-Host "primary_container=$($config.primaryContainer)" >> "$GITHUB_ENV"

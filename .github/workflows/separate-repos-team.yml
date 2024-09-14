@@ -1,0 +1,9 @@
+name: Deploy team setup
+
+on: [push]
+
+jobs:
+  build-and-deploy:
+    uses: ./separate-repos-platform-automation.yml
+    with:
+      configFilePath: separate_repos/team_repo/config.json
