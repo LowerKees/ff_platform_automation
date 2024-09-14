@@ -10,7 +10,7 @@ on:
       secrets:
         FF_AZ_CRED:
           required: true
-          
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -22,6 +22,7 @@ jobs:
     - name: Get deployment values
       uses: azure/powershell@v2
       with:
+        azPSVersion: latest
         inlineScript: |
           $config = Get-Content -Path ${{ inputs.configFilePath }} | ConvertFrom-Json -Depth 99
           Write-Host "sub_id=$($config.subscriptionId)" >> "$GITHUB_ENV"
