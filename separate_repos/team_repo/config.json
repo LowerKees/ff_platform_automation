@@ -3,6 +3,6 @@
     "resourceGroupName": "rg-ff-syn-team001",
     "primaryContainer": "workspace",
     "secondaryContainers": ["bronze", "silver", "gold"],
-    "location": "Germany West Central",
+    "location": "germanywestcentral",
     "shortTeamName": "team001"
 }
