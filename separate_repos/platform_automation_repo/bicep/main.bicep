@@ -32,7 +32,7 @@ module storage 'storage.bicep' = {
     skuName: skuName
   }
 }
-s
+
 module synapse 'synapse.bicep' = {
   name: 'deploy-synapse-workspace-${buildId}'
   params: {
