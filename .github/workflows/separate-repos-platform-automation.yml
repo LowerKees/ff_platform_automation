@@ -17,7 +17,7 @@ jobs:
       with:
         inlineScript: |
           $config = Get-Content -Path config.json | ConvertFrom-Json -Depth 99
-          Write-Host "sub_id=$($config.subscription_id)" >> "$GITHUB_ENV"
+          Write-Host "sub_id=$($config.subscriptionId)" >> "$GITHUB_ENV"
           Write-Host "rsg=$($config.resourceGroupName)" >> "$GITHUB_ENV"
           Write-Host "primary_container=$($config.primaryContainer)" >> "$GITHUB_ENV"
           Write-Host "secondary_container=$($config.secondaryContainers)" >> "$GITHUB_ENV"
@@ -46,9 +46,9 @@ jobs:
             --name deploy001 \
             --template-file separate_repos/platform_automation_repo/bicep/main.bicep \
             --parameters buildId=$GITHUB_RUN_ID \
-              primaryContainer=
-              secondaryContainers=
-              environment=
+              primaryContainer=$primary_container \
+              secondaryContainers=$secondary_containers \
+              environment=dev \
               location=$location \
               shortTeamName=$short_team_name \
               skuName="Standard_LRS"
