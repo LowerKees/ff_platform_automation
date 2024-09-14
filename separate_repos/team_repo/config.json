@@ -4,5 +4,5 @@
     "primaryContainer": "workspace",
     "secondaryContainers": ["bronze", "silver", "gold"],
     "location": "Germany West Central",
-    "teamShortName": "team001"
+    "shortTeamName": "team001"
 }
