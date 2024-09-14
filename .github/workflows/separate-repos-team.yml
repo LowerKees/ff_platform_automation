@@ -4,6 +4,6 @@ on: [push]
 
 jobs:
   build-and-deploy:
-    uses: ./separate-repos-platform-automation.yml
+    uses: LowerKees/ff_platform_automation/.github/workflows/separate-repos-platform-automation.yml@16641b2611f7c420f682c85b0f70434aea16ea01
     with:
       configFilePath: separate_repos/team_repo/config.json
