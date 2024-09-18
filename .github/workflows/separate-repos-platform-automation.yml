@@ -57,6 +57,8 @@ jobs:
         inlineScript: |
           az group create --location "$location" --name $rsg
 
+    - run: ls -laR
+
     - name: Deploy resources
       uses: azure/cli@v2
       with:
