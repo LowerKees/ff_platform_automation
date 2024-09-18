@@ -16,7 +16,6 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
     allowCrossTenantReplication: false
     allowSharedKeyAccess: false
     isHnsEnabled: true
-    minimumTlsVersion: 'TLS1_2'
     publicNetworkAccess: 'Disabled'
     supportsHttpsTrafficOnly: true
     networkAcls: {
