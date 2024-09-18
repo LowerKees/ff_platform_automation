@@ -2,7 +2,7 @@
 param containerName string
 @description('Object ID of entity that is made the initial admin of the workspace')
 param initialWorkspaceAdminObjectId string
-param location string = 'Sweden South'
+param location string
 @description('Name of the storage account to link to synapse')
 param storageAccountName string
 param synapseName string 

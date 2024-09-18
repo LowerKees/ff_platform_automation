@@ -25,26 +25,12 @@ jobs:
         azPSVersion: latest
         inlineScript: |
           $config = Get-Content -Path ${{ inputs.configFilePath }} | ConvertFrom-Json -Depth 99
-          Write-HOst "hello"
-          Write-Host $config
-          Write-Host "hell2"
           "sub_id=$($config.subscriptionId)" >> $env:GITHUB_ENV
           "rsg=$($config.resourceGroupName)" >> $env:GITHUB_ENV
           "primary_container=$($config.primaryContainer)" >> $env:GITHUB_ENV
           "secondary_containers=$($config.secondaryContainers)" >> $env:GITHUB_ENV
           "location=$($config.location)" >> $env:GITHUB_ENV
           "short_team_name=$($config.shortTeamName)" >> $env:GITHUB_ENV
-
-    - name: Get deployment values
-      uses: azure/powershell@v2
-      with:
-        azPSVersion: latest
-        inlineScript: |
-          Write-Host "github env"
-          Get-Content -Path $env:GITHUB_ENV -Raw
-          Write-Host "secondary containers"
-          Write-Host $env:secondary_containers
-          Write-Host "Done"
 
     - name: Log into Azure
       uses: azure/login@v2
@@ -56,7 +42,7 @@ jobs:
       with:
         azcliversion: latest
         inlineScript: |
-          az group create --location $location --name $rsg
+          az group create --location "$location" --name $rsg
 
     - name: Deploy resources
       uses: azure/cli@v2
@@ -71,6 +57,6 @@ jobs:
               primaryContainer=$primary_container \
               secondaryContainers=$secondary_containers \
               environment="dev" \
-              location=$location \
+              location="$location" \
               shortTeamName=$short_team_name \
               skuName="Standard_LRS"

@@ -2,8 +2,8 @@
 param buildId string = uniqueString(utcNow())
 @description('The storage container used for synapse workspace items.')
 param primaryContainer string
-@description('List of storage containers to deploy additionally.')
-param secondaryContainers array
+@description('Space separated string of storage containers to deploy additionally.')
+param secondaryContainers string
 @allowed(['dev', 'tst', 'acc', 'prd'])
 @description('The target environment description')
 param environment string
@@ -17,7 +17,8 @@ param shortTeamName string
 @allowed(['Standard_LRS', 'Standard_ZRS', 'Standard_GRS', 'Standard_GZRS', 'Standard_RAGRS', 'Standard_RAGZRS'])
 param skuName string = 'Standard_ZRS'
 
-var containers = union(array(primaryContainer), secondaryContainers)
+var secondaryContainersArray = split(replace(secondaryContainers, ' ', ''), ',')
+var containers = union(array(primaryContainer), secondaryContainersArray)
 var environmentLower = toLower(environment)
 var shortTeamNameLower = toLower(shortTeamName)
 var storageName = 'st${shortTeamNameLower}${environmentLower}'
@@ -37,8 +38,9 @@ module synapse 'synapse.bicep' = {
   name: 'deploy-synapse-workspace-${buildId}'
   params: {
     containerName: primaryContainer
+    location: location
     initialWorkspaceAdminObjectId: '015b609e-2397-4e03-8708-3d9b05fb82a3'  //  entra id admins group 
-    storageAccountName: storage.name
+    storageAccountName: storage.outputs.storageAccountName
     synapseName: synapseName
   }
 }

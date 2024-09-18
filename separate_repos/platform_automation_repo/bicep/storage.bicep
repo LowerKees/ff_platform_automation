@@ -1,5 +1,5 @@
 param containers array
-param location string = 'Sweden South'
+param location string
 param skuName string = 'Standard_ZRS'
 param storageName string
 
@@ -37,3 +37,5 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
     publicAccess: 'None'
   }
 }]
+
+output storageAccountName string = storage.name
