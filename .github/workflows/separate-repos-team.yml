@@ -7,5 +7,6 @@ jobs:
     uses: LowerKees/ff_platform_automation/.github/workflows/separate-repos-platform-automation.yml@main
     with:
       configFilePath: separate_repos/team_repo/config.json
+      refCheckout: synapse-v1.0.0
     secrets:
       FF_AZ_CRED: ${{ secrets.FF_AZ_CRED}}

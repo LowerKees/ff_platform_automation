@@ -7,6 +7,10 @@ on:
           description: file path to your config file
           required: true
           type: string
+        refCheckout:
+          description: ref to checkout the infra at
+          required: true
+          type: string
       secrets:
         FF_AZ_CRED:
           required: true
@@ -17,14 +21,23 @@ jobs:
     steps:
 
     - name: Checkout code
-      uses: actions/checkout@main
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.refCheckout }}
+        path: infra
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: main
+        path: team
 
     - name: Get deployment values
       uses: azure/powershell@v2
       with:
         azPSVersion: latest
         inlineScript: |
-          $config = Get-Content -Path ${{ inputs.configFilePath }} | ConvertFrom-Json -Depth 99
+          $config = Get-Content -Path team/${{ inputs.configFilePath }} | ConvertFrom-Json -Depth 99
           "sub_id=$($config.subscriptionId)" >> $env:GITHUB_ENV
           "rsg=$($config.resourceGroupName)" >> $env:GITHUB_ENV
           "primary_container=$($config.primaryContainer)" >> $env:GITHUB_ENV
@@ -52,7 +65,7 @@ jobs:
           az deployment group create \
             --resource-group $rsg \
             --name deploy001 \
-            --template-file separate_repos/platform_automation_repo/bicep/main.bicep \
+            --template-file infra/separate_repos/platform_automation_repo/bicep/main.bicep \
             --parameters buildId=$GITHUB_RUN_ID \
               primaryContainer=$primary_container \
               secondaryContainers=$secondary_containers \
