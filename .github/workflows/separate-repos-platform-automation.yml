@@ -20,13 +20,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Checkout code
+    - name: Checkout infra code
       uses: actions/checkout@v4
       with:
         ref: ${{ inputs.refCheckout }}
         path: infra
 
-    - name: Checkout code
+    - name: Checkout team code
       uses: actions/checkout@v4
       with:
         ref: main
