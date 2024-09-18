@@ -65,7 +65,7 @@ jobs:
           az deployment group create \
             --resource-group $rsg \
             --name deploy001 \
-            --template-file infra/platform_automation_repo/bicep/main.bicep \
+            --template-file infra/platform_automation/bicep/main.bicep \
             --parameters buildId=$GITHUB_RUN_ID \
               primaryContainer=$primary_container \
               secondaryContainers=$secondary_containers \
