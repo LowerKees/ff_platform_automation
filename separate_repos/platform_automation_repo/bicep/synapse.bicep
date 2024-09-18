@@ -20,6 +20,7 @@ resource synapse 'Microsoft.Synapse/workspaces@2021-06-01' = {
   properties: {
     azureADOnlyAuthentication: true
     defaultDataLakeStorage: {
+      resourceId: storage.id
       accountUrl: storage.properties.primaryEndpoints.dfs
       filesystem: containerName
       createManagedPrivateEndpoint: true
